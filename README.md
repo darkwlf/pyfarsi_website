@@ -1,2 +1,2 @@
-# pyfarsi_website
+# PyFarsi Website
 PyFarsi official website

@@ -9,4 +9,4 @@ class User(AbstractUser):
 
     class Meta:
         db_table = 'pyfarsi_users'
-        ordering = ('date_joined',)
+        ordering = ('-date_joined',)

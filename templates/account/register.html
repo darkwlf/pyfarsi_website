@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+</head>
+<body>
+    <h1>Register</h1>
+    <form action="{% url 'account:register' %}" method="post">{% csrf_token %}
+        {{ form.username.label_tag }}
+        {{ form.username }}
+        {{ form.user.errors }}
+        {% include 'includes/field_error.html' with field=form.username %}
+        <br><br>
+        {{ form.email.label_tag }}
+        {{ form.email }}
+        {% include 'includes/field_error.html' with field=form.email %}
+        <br><br>
+        {{ form.first_name.label_tag }}
+        {{ form.first_name }}
+        {% include 'includes/field_error.html' with field=form.first_name %}
+        <br><br>
+        {{ form.last_name.label_tag }}
+        {{ form.last_name }}
+        {% include 'includes/field_error.html' with field=form.last_name %}
+        <br><br>
+        {{ form.password.label_tag }}
+        {{ form.password }}
+        {% include 'includes/field_error.html' with field=form.password %}
+        <br><br>
+        {{ form.password_confirm.label_tag }}
+        {{ form.password_confirm }}
+        {% include 'includes/field_error.html' with field=form.password_confirm %}
+        <br><br>
+        {{ form.phone_number.label_tag }}
+        {{ form.phone_number }}
+        {% include 'includes/field_error.html' with field=form.phone_number %}
+        <br><br>
+        <input type="submit" value="Register" />
+    </form>
+</body>
+</html>

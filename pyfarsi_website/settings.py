@@ -25,7 +25,7 @@ SECRET_KEY = '737ac78c0505318e38c24ffe380a9751'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = {}
 
 
 # Application definition
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'phonenumber_field',
     'account.apps.AccountConfig'
 ]
 
@@ -121,3 +122,4 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 AUTH_USER_MODEL = 'account.User'
+LOGIN_REDIRECT_URL = 'account:profile'

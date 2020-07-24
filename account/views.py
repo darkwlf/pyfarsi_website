@@ -1,3 +1,7 @@
-from django.shortcuts import render
+from django.contrib.auth.views import LoginView
+from django.conf import settings
 
-# Create your views here.
+
+class Login(LoginView):
+    template_name = 'account/login.html'
+    success_url_allowed_hosts = settings.ALLOWED_HOSTS

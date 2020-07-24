@@ -1,0 +1,34 @@
+<html lang="fa">
+<head>
+    <title>
+        Login
+    </title>
+</head>
+<body>
+    {% if next %}
+        {% if user.is_authenticated %}
+            <h1>You do not have required permissions !</h1>
+        {% else %}
+            <h1>Please login to see this page !</h1>
+        {% endif %}
+    {% else %}
+        <h1>Login</h1>
+    {% endif %}
+    <form action="{% url 'account:login' %}" method="post">{% csrf_token %}
+        {{ form.username.label_tag }}
+        {{ form.username }}
+        {{ form.username.errors }}
+        <br><br>
+        {{ form.password.label_tag }}
+        {{ form.password }}
+        <input type="hidden" name="next" value="{{ next }}" />
+        {% if form.username.value %}
+            <h5>
+                Login failed !
+            </h5>
+        {% endif %}
+        <br><br>
+        <input type="submit" value="Login !">
+    </form>
+</body>
+</html>

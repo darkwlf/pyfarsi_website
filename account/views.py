@@ -19,8 +19,8 @@ class Logout(LoginRequiredMixin, auth_views.LogoutView):
     
 class PasswordReset(auth_views.PasswordResetView):
     template_name = 'account/password_reset_form.html'
-    success_url = 'accounts:password_reset_done'
-    email_template_name = 'accounts/password_reset_email.html'
+    success_url = 'account:password_reset_done'
+    email_template_name = 'account/password_reset_email.html'
 
 
 class PasswordResetDone(auth_views.PasswordResetDoneView):
@@ -29,7 +29,7 @@ class PasswordResetDone(auth_views.PasswordResetDoneView):
 
 class PasswordResetConfirm(auth_views.PasswordResetConfirmView):
     template_name = 'account/password_reset_confirm.html'
-    success_url = 'accounts:password_reset_complete'
+    success_url = 'account:password_reset_complete'
 
 
 class PasswordResetComplete(auth_views.PasswordResetCompleteView):

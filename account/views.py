@@ -2,11 +2,9 @@ from django.conf import settings
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect, get_object_or_404
-
 from . import models
 from .decorators import not_logged_in
 from .forms import Register
-from .tasks import remove_user
 
 
 class Login(auth_views.LoginView):
@@ -48,11 +46,15 @@ def register(request):
             temp_user = context['form'].save(False)
             temp_user.set_password(temp_user.password)
             temp_user.save()
-            remove_user(temp_user.id)
-            return redirect('account:login')
+            return redirect('account:register_complete')
     else:
         context['form'] = Register()
     return render(request, 'account/register.html', context)
+
+
+@not_logged_in
+def register_complete(request):
+    return render(request, 'account/register_complete.html')
 
 
 def verify_email(request, key):

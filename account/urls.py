@@ -10,5 +10,6 @@ urlpatterns = (
     path('logout/', views.Logout.as_view(), name='logout'),
     path('logout/', views.Logout.as_view(), name='logout'),
     path('register/', views.register, name='register'),
-    path('verify-email/<str:key>/', views.verify_email, name='verify_email')
+    path('verify-email/<str:key>/', views.verify_email, name='verify_email'),
+    path('register-complete/', views.register_complete, name='register_complete')
 )

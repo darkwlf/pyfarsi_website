@@ -4,9 +4,8 @@ from .models import User
 
 
 @background(schedule=timedelta(days=2))
-def remove_user(user_id):
+def remove_user(username: str):
     try:
-        user = User.objects.get(id=user_id, is_active=False)
+        User.objects.get(username=username, is_active=False).delete()
     except User.DoesNotExist:
         return
-    user.delete()

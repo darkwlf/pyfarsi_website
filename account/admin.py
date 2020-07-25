@@ -11,5 +11,5 @@ class User(admin.ModelAdmin):
     date_hierarchy = 'date_joined'
     fieldsets = (
         ('Information', {'fields': ('username', 'email', 'date_joined', 'first_name', 'last_name', 'password')}),
-        ('Status', {'fields': ('is_active', 'is_staff', 'last_login', 'is_superuser')})
+        ('Status', {'fields': ('is_active', 'is_staff', 'last_login', 'is_superuser', 'ip')})
     )

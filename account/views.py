@@ -1,5 +1,5 @@
 from django.contrib.auth import views as auth_views
-from django.contrib.auth.mixins import LoginRequiredMixin
+from account.mixins import LoginRequired
 from django.conf import settings
 from .decorators import not_logged_in
 from .forms import Register
@@ -12,7 +12,7 @@ class Login(auth_views.LoginView):
     redirect_authenticated_user = True
 
 
-class Logout(LoginRequiredMixin, auth_views.LogoutView):
+class Logout(LoginRequired, auth_views.LogoutView):
     redirect_field_name = None
     template_name = 'account/logout.html'
 

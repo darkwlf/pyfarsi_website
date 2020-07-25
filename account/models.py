@@ -14,6 +14,7 @@ class User(AbstractUser):
     last_name = models.CharField(max_length=30, verbose_name='Last Name')
     phone_number = PhoneNumberField(verbose_name='Phone Number', help_text='e.g: +98 ...')
     password = models.CharField(verbose_name='Password', help_text='Hashed Password', max_length=128)
+    ip = models.GenericIPAddressField(verbose_name='Last IP', null=True, blank=True)
     REQUIRED_FIELDS = ('first_name', 'last_name')
 
     class Meta:

@@ -9,5 +9,6 @@ urlpatterns = (
     path('reset-complete/', views.PasswordResetComplete.as_view(), name='password_reset_complete'),
     path('logout/', views.Logout.as_view(), name='logout'),
     path('logout/', views.Logout.as_view(), name='logout'),
-    path('register/', views.register, name='register')
+    path('register/', views.register, name='register'),
+    path('verify-email/<str:key>/', views.verify_email, name='verify_email')
 )

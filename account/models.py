@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from phonenumber_field.modelfields import PhoneNumberField
+from uuid import uuid4
 
 
 class User(AbstractUser):
@@ -24,3 +25,12 @@ class User(AbstractUser):
         if self.__password != self.password:
             self.set_password(self.password)
         super().save(*args, **kwargs)
+
+
+class Validation(models.Model):
+    key = models.UUIDField(default=uuid4, verbose_name='Validation Key', primary_key=True)
+    user = models.ForeignKey(User, models.CASCADE, 'validations_user')
+
+    class Meta:
+        db_table = 'pyfarsi_validations'
+        ordering = ('-user__date_joined',)

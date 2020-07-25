@@ -1,9 +1,11 @@
+from django.conf import settings
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.conf import settings
+from django.shortcuts import render, redirect, get_object_or_404
+
+from . import models
 from .decorators import not_logged_in
 from .forms import Register
-from django.shortcuts import render, redirect
 
 
 class Login(auth_views.LoginView):
@@ -43,9 +45,16 @@ def register(request):
         context['form'] = Register(request.POST)
         if context['form'].is_valid():
             temp_user = context['form'].save(False)
-            temp_user.is_active = True
+            temp_user.set_password(temp_user.password)
             temp_user.save()
             return redirect('account:login')
     else:
         context['form'] = Register()
     return render(request, 'account/register.html', context)
+
+
+def verify_email(request, key):
+    user = get_object_or_404(models.Validation, key=key, user__is_active=False).user
+    user.is_active = True
+    user.save()
+    return render(request, 'account/verify_email.html')

@@ -23,8 +23,4 @@ class User(AbstractUser):
     def save(self, *args, **kwargs):
         if self.__password != self.password:
             self.set_password(self.password)
-
-    def save(self, *args, **kwargs):
-        if self.__password != self.password:
-            self.set_password(self.password)
         super().save(*args, **kwargs)

@@ -1,4 +1,4 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required as original_login_required
 from django.http import HttpRequest
 from django.shortcuts import redirect
 from ipware import get_client_ip
@@ -13,8 +13,8 @@ def not_logged_in(func):
     return check
 
 
-@login_required
-def login_required_save_ip(func):
+@original_login_required
+def login_required(func):
     def check(request: HttpRequest, /, *args, **kwargs):
         if request.user.is_authenticated:
             request.user.ip = get_client_ip(request)[0]

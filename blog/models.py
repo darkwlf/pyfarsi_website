@@ -34,6 +34,7 @@ class Article(models.Model):
     status = models.CharField(max_length=1, choices=Status.choices)
     slug = models.SlugField(max_length=50)
     categories = models.ManyToManyField(Category, 'article_categories')
+    thumb = models.ImageField(verbose_name='Thumb Image', upload_to='thumbs/')
 
     def get_absolute_url(self):
         return reverse('blog:articles', self.id, 1, self.slug)

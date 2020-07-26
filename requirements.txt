@@ -5,7 +5,7 @@ django-background-tasks==1.2.5
 django-compat==1.0.15
 django-ipware==3.0.0
 django-phonenumber-field==4.0.0
-phonenumbers==8.12.7
+phonenumbers==8.12.6
 pkg-resources==0.0.0
 pytz==2020.1
 six==1.15.0

@@ -16,6 +16,9 @@ class SerachView(ListView):
           category_list = Category.objects.filter(
               Q(name__icontains=query)
           )
+                     
+          object_list = article_list + category_list           
+
         else:
            article_query = Article.objects.all()
            category_query = Category.objects.all()

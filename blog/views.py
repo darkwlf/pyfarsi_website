@@ -1,12 +1,11 @@
-from django.shortcuts import render
 from django.db.models import Q
 from .models import Article
 from django.views.generic import ListView
 
 
-class Article(ListView):
+class Articles(ListView):
     model = Article
-    template_name = 'article.html'
+    template_name = 'blog/articles.html'
     paginate_by = 9
 
     def get_queryset(self):
@@ -17,5 +16,4 @@ class Article(ListView):
             )
         else:
             article_query = Article.objects.all()
-
         return article_query

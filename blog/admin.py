@@ -1,5 +1,6 @@
 from django.contrib import admin
 from . import models
+from django.http import HttpRequest
 
 
 @admin.register(models.Category)
@@ -27,6 +28,11 @@ class Article(admin.ModelAdmin):
 
     def get_categories(self, categories):
         return ', '.join([category.name for category in categories.objects.all()[:5]])
+
+    def has_delete_permission(self, request: HttpRequest, obj: models.Article = None):
+        return super().has_delete_permission(request, obj) and (
+                request.user.is_superuser or not obj or obj.author == request.user
+        )
 
 
 @admin.register(models.Comment)

@@ -1,10 +1,10 @@
 from django.contrib.auth import views as auth_views
-from account.mixins import LoginRequired
+from utils.mixins import LoginRequired
+from utils.decorators import not_logged_in
 from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import CreateView
 from . import models
-from .decorators import not_logged_in
 from .forms import Register
 
 
@@ -18,7 +18,7 @@ class Logout(LoginRequired, auth_views.LogoutView):
     redirect_field_name = None
     template_name = 'account/logout.html'
 
-    
+
 class PasswordReset(auth_views.PasswordResetView):
     template_name = 'account/password_reset_form.html'
     success_url = 'account:password_reset_done'

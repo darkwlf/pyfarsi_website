@@ -15,7 +15,6 @@ class Article(ListView):
             article_query = Article.objects.filter(
                 Q(title__icontains=query) | Q(content__icontains=query)
             )
-
         else:
             article_query = Article.objects.all()
 

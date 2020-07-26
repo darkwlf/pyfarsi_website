@@ -20,7 +20,7 @@ class Article(admin.ModelAdmin):
     list_per_page = 15
     readonly_fields = ('date',)
     fieldsets = (
-        ('Information', {'fields': (('title', 'slug'), 'author', 'categories')}),
+        ('Information', {'fields': (('title', 'slug'), 'categories')}),
         ('Status', {'fields': ('status', 'date')}),
         ('Content', {'fields': ('content',)})
     )
@@ -32,13 +32,13 @@ class Article(admin.ModelAdmin):
 @admin.register(models.Comment)
 class Comment(admin.ModelAdmin):
     list_display = ('date', 'author', 'article', 'status')
-    search_fields = ('author__username', 'author__email', 'article__title', 'article__category__name')
+    search_fields = ('author__username', 'author__email', 'article__title', 'content')
     list_filter = ('status', 'author__is_staff')
     date_hierarchy = 'date'
     list_per_page = 15
     readonly_fields = ('date',)
     fieldsets = (
-        ('Information', {'fields': (('author', 'article'),)}),
+        ('Information', {'fields': (('article',),)}),
         ('Status', {'fields': ('status', 'date')}),
         ('Content', {'fields': ('content',)})
     )

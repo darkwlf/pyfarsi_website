@@ -34,6 +34,11 @@ class Article(admin.ModelAdmin):
                 request.user.is_superuser or not obj or obj.author == request.user
         )
 
+    def has_change_permission(self, request: HttpRequest, obj: models.Article = None):
+        return super().has_change_permission(request, obj) and (
+            request.user.is_superuser or not obj or obj.author == request.user
+        )
+
 
 @admin.register(models.Comment)
 class Comment(admin.ModelAdmin):

@@ -6,7 +6,7 @@ from django.shortcuts import reverse
         
 class Category(models.Model):
     sub_category = models.ForeignKey(
-        'Category', on_delete=models.CASCADE, related_name='sub_category', null=True, blank=True
+        'Category', on_delete=models.CASCADE, related_name='sub_categories', null=True, blank=True
     )
     name = models.CharField(max_length=40, primary_key=True)
     slug = models.SlugField(max_length=50, unique=True)

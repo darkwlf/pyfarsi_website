@@ -43,7 +43,8 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     # Local
-    'account.apps.AccountConfig'
+    'account.apps.AccountConfig',
+    'blog.apps.BlogConfig'
 ]
 
 MIDDLEWARE = [

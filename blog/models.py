@@ -8,3 +8,7 @@ class Article(models.Model):
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL, on_delete=models.DO_NOTHING, related_name="articles"
     )
+    date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = "pyfarsi_articles"

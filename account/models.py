@@ -16,14 +16,14 @@ class User(AbstractUser):
     phone_number = PhoneNumberField(verbose_name='Phone Number', help_text='e.g: +98 ...')
     password = models.CharField(verbose_name='Password', help_text='Hashed Password', max_length=128)
     ip = models.GenericIPAddressField(verbose_name='Last IP', null=True, blank=True)
-    REQUIRED_FIELDS = ('first_name', 'last_name')
+    REQUIRED_FIELDS = ('first_name', 'last_name', 'email')
 
     class Meta:
         db_table = 'pyfarsi_users'
         ordering = ('-date_joined',)
 
     def save(self, *args, **kwargs):
-        if self.__password != self.password:
+        if self.__password and self.__password != self.password:
             self.set_password(self.password)
         super().save(*args, **kwargs)
 

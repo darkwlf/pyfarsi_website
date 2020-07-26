@@ -6,7 +6,7 @@ class Article(models.Model):
     class Status(models.TextChoices):
         DRAFT = "d"
         PUBLISH = "p"
-
+    
     title = models.CharField(max_length=220, verbose_name="Title")
     content = models.TextField(verbose_name="Content")
     author = models.ForeignKey(

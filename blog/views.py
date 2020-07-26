@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.db.models import Q
 from .models import Article
-django.views.generic import listview
+from django.views.generic import ListView 
 
 
 class ArticleView(ListView):

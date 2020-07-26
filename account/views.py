@@ -1,7 +1,8 @@
 from django.contrib.auth import views as auth_views
 from account.mixins import LoginRequired
 from django.conf import settings
-from django.shortcuts import render, redirect, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
+from django.views.generic import CreateView
 from . import models
 from .decorators import not_logged_in
 from .forms import Register
@@ -37,19 +38,15 @@ class PasswordResetComplete(auth_views.PasswordResetCompleteView):
     template_name = 'account/password_reset_complete.html'
 
 
-@not_logged_in
-def register(request):
-    context = dict()
-    if request.method == 'POST':
-        context['form'] = Register(request.POST)
-        if context['form'].is_valid():
-            temp_user = context['form'].save(False)
-            temp_user.set_password(temp_user.password)
-            temp_user.save()
-            return redirect('account:register_complete')
-    else:
-        context['form'] = Register()
-    return render(request, 'account/register.html', context)
+class RegisterView(CreateView):
+    form_class = Register
+    success_url = 'account:register_complete'
+
+    def form_valid(self, form):
+        temp_user = form.save(False)
+        temp_user.set_password(temp_user.password)
+        temp_user.save()
+        return redirect(self.get_success_url)
 
 
 @not_logged_in

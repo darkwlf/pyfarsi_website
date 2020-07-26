@@ -31,14 +31,20 @@ ALLOWED_HOSTS = {}
 # Application definition
 
 INSTALLED_APPS = [
+    # Pre Installed
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # 3rd party
     'phonenumber_field',
-    'account.apps.AccountConfig'
+    'ckeditor',
+    'ckeditor_uploader',
+    # Local
+    'account.apps.AccountConfig',
+    'blog.apps.BlogConfig'
 ]
 
 MIDDLEWARE = [
@@ -126,3 +132,4 @@ LOGIN_REDIRECT_URL = 'account:profile'
 LOGIN_URL = 'account:login'
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = 'emails'
+CKEDITOR_UPLOAD_PATH = 'ckeditor'

@@ -19,11 +19,11 @@ class Article(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
     list_per_page = 15
     readonly_fields = ('date',)
-    fieldsets = {
-        'Information': {'fields': (('title', 'slug'), 'author', 'categories')},
-        'Status': {'fields': ('status', 'date')},
-        'Content': {'fields': ('content',)}
-    }
+    fieldsets = (
+        ('Information', {'fields': (('title', 'slug'), 'author', 'categories')}),
+        ('Status', {'fields': ('status', 'date')}),
+        ('Content', {'fields': ('content',)})
+    )
 
     def get_categories(self, categories):
         return ', '.join([category.name for category in categories.objects.all()[:5]])
@@ -37,8 +37,8 @@ class Comment(admin.ModelAdmin):
     date_hierarchy = 'date'
     list_per_page = 15
     readonly_fields = ('date',)
-    fieldsets = {
-        'Information': {'fields': (('author', 'article'),)},
-        'Status': {'fields': ('status', 'date')},
-        'Content': {'fields': ('content',)}
-    }
+    fieldsets = (
+        ('Information', {'fields': (('author', 'article'),)}),
+        ('Status', {'fields': ('status', 'date')}),
+        ('Content', {'fields': ('content',)})
+    )

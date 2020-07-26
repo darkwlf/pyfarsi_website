@@ -4,10 +4,11 @@ from .models import Article
 from django.views.generic import ListView 
 
 
-class ArticleView(ListView):
+class Article(ListView):
     model = Article
     template_name = 'article.html'
-
+    context_object_name = 'articles'
+    paginate_by = 10
     def get_queryset(self):
         query = self.request.GET.get('q')
         if query:

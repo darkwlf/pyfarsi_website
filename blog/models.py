@@ -27,7 +27,9 @@ class Article(models.Model):
 
     title = models.CharField(max_length=220)
     content = RichTextUploadingField()
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, related_name='article_author')
+    author = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.SET_NULL, related_name='article_author', null=True, blank=True
+    )
     date = models.DateTimeField(auto_now_add=True, verbose_name='Creation Date')
     status = models.CharField(max_length=1, choices=Status.choices)
     slug = models.SlugField(max_length=50)

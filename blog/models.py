@@ -56,7 +56,7 @@ class Comment(models.Model):
 
     class Meta:
         db_table = 'pyfarsi_comments'
-        ordering = ('id',)
+        ordering = ('-id',)
 
     def __str__(self):
         return f'{self.author.username} : {self.article.title}'

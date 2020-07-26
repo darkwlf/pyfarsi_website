@@ -20,9 +20,25 @@ class Article(admin.ModelAdmin):
     list_per_page = 15
     readonly_fields = ('date',)
     fieldsets = {
-        'Information': {'fields': (('title', 'slug'), 'author', 'categories', 'content')},
-        'Status': {'fields': ('status', 'date')}
+        'Information': {'fields': (('title', 'slug'), 'author', 'categories')},
+        'Status': {'fields': ('status', 'date')},
+        'Content': {'fields': ('content',)}
     }
 
     def get_categories(self, categories):
         return ', '.join([category.name for category in categories.objects.all()[:5]])
+
+
+@admin.register(models.Comment)
+class Comment(admin.ModelAdmin):
+    list_display = ('date', 'author', 'article', 'status')
+    search_fields = ('author__username', 'author__email', 'article__title', 'article__category__name')
+    list_filter = ('status', 'author__is_staff')
+    date_hierarchy = 'date'
+    list_per_page = 15
+    readonly_fields = ('date',)
+    fieldsets = {
+        'Information': {'fields': (('author', 'article'),)},
+        'Status': {'fields': ('status', 'date')},
+        'Content': {'fields': ('content',)}
+    }

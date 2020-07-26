@@ -8,3 +8,21 @@ class Category(admin.ModelAdmin):
     search_fields = ('name', 'slug', 'sub_category__name')
     list_per_page = 15
     fieldsets = (('Information', {'fields': ('name', 'slug', 'sub_category')}),)
+
+
+@admin.register(models.Article)
+class Article(admin.ModelAdmin):
+    list_display = ('title', 'author', 'date', 'status', 'get_categories')
+    search_fields = ('author__username', 'author__email', 'title', 'category__name')
+    list_filter = ('status', 'author__is_staff')
+    date_hierarchy = 'date'
+    prepopulated_fields = {'slug': ('title',)}
+    list_per_page = 15
+    readonly_fields = ('date',)
+    fieldsets = {
+        'Information': {'fields': (('title', 'slug'), 'author', 'categories', 'content')},
+        'Status': {'fields': ('status', 'date')}
+    }
+
+    def get_categories(self, categories):
+        return ', '.join([category.name for category in categories.objects.all()[:5]])

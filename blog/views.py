@@ -17,3 +17,12 @@ class Articles(ListView):
         else:
             article_query = Article.objects.all()
         return article_query
+
+
+class ArticleDetail(DetailView):
+    model = Article
+    template_name = "blog/article_detail.html"
+    context_object_name = 'article'
+    
+    def get_queryset(self):
+        query = Article.objects.filter(status='p')

@@ -1,9 +1,10 @@
 from django.db.models import Q
 from .models import Article, Comment
-from .serializers import CreateCommentSerializer
+from .paginators import CommentPaginator
+from .serializers import CreateComment, GetComment
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, ListAPIView
 
 
 class Articles(ListView):
@@ -30,4 +31,13 @@ class ArticleDetailView(DetailView):
 
 class CreateCommentView(CreateAPIView):
     queryset = Comment.objects.all()
-    serializer_class = CreateCommentSerializer
+    serializer_class = CreateComment
+
+
+class GetCommentsView(ListAPIView):
+    serializer_class = GetComment
+    pagination_class = CommentPaginator
+
+    def get_queryset(self):
+        article_id = self.kwargs['pk']
+        return Comment.objects.filter(id=article_id)

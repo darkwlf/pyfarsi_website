@@ -11,4 +11,5 @@ urlpatterns = (
         name="article_detail",
     ),
     path("comment/", views.CreateCommentView.as_view(), name="create_comment"),
+    path("article/<int:pk>/", views.GetCommentsView.as_view(), name="get_comments"),
 )

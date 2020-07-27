@@ -3,13 +3,13 @@ from .models import Comment
 from account.models import User
 
 
-class GetUserSerializer(ModelSerializer):
+class GetUser(ModelSerializer):
     class Meta:
         model = User
         fields = ('username', 'first_name', 'last_name')
 
 
-class GetCommentSerializer(ModelSerializer):
+class GetComment(ModelSerializer):
     author = GetUser(read_only=True)
 
     class Meta:
@@ -18,7 +18,7 @@ class GetCommentSerializer(ModelSerializer):
         read_only_fields = ('content', 'date', 'status')
 
 
-class CreateCommentSerializer(ModelSerializer):
+class CreateComment(ModelSerializer):
     article = PrimaryKeyRelatedField()
 
     class Meta:

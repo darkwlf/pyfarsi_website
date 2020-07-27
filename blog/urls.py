@@ -2,8 +2,13 @@ from django.urls import path
 from . import views
 
 
-app_name = 'blog'
+app_name = "blog"
 urlpatterns = (
-    path('articles/<int:page>/', views.Articles.as_view(), name='articles'),
-    path('comment/', views.CreateCommentView.as_view(), name='create_comment'),
+    path("articles/<int:page>/", views.Articles.as_view(), name="articles"),
+    path(
+        "articles/<int:id>/<slug:slug>/",
+        views.ArticleDetailView.as_view(),
+        name="article_detail",
+    ),
+    path("comment/", views.CreateCommentView.as_view(), name="create_comment"),
 )

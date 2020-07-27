@@ -2,6 +2,7 @@ from django.db.models import Q
 from .models import Article, Comment
 from .serializers import CreateCommentSerializer
 from django.views.generic import ListView
+from django.views.generic.detail import DetailView
 from rest_framework.generics import CreateAPIView
 
 
@@ -19,6 +20,12 @@ class Articles(ListView):
         else:
             article_query = Article.objects.all()
         return article_query
+
+
+class ArticleDetailView(ListView):
+    context_object_name = 'Article'
+    template_name = 'blog/article_detail.html'
+    model = Article
 
 
 class CreateCommentView(CreateAPIView):

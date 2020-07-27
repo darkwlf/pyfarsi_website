@@ -6,7 +6,7 @@ app_name = "blog"
 urlpatterns = (
     path("articles/<int:page>/", views.Articles.as_view(), name="articles"),
     path(
-        "articles/<int:id>/<slug:slug>/",
+        "articles/<int:pk>/<slug:slug>/",
         views.ArticleDetailView.as_view(),
         name="article_detail",
     ),

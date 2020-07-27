@@ -43,7 +43,7 @@ class Article(models.Model):
         db_table = 'pyfarsi_articles'
 
     def __str__(self):
-        return f'{self.id} : {self.author.username}'
+        return f'{self.id} : {self.author}'
 
 
 class Comment(models.Model):

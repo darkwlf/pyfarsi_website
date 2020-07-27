@@ -27,6 +27,9 @@ class User(AbstractUser):
             self.set_password(self.password)
         super().save(*args, **kwargs)
 
+    def __str__(self):
+        return self.username
+
 
 class Validation(models.Model):
     key = models.UUIDField(default=uuid4, verbose_name='Validation Key', primary_key=True)

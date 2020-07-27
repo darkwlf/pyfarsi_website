@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'phonenumber_field',
     'ckeditor',
     'ckeditor_uploader',
+    'rest_framework',
     # Local
     'account.apps.AccountConfig',
     'blog.apps.BlogConfig'

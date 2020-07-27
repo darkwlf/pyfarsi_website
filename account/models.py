@@ -25,6 +25,8 @@ class User(AbstractUser):
     def save(self, *args, **kwargs):
         if self.__password and self.__password != self.password:
             self.set_password(self.password)
+        if self.is_superuser:
+            self.is_active = True
         super().save(*args, **kwargs)
 
 

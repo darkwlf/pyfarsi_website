@@ -47,7 +47,7 @@ class RegisterView(CreateView):
         temp_user = form.save(False)
         temp_user.set_password(temp_user.password)
         temp_user.save()
-        return redirect(self.get_success_url)
+        return redirect(self.get_success_url())
 
 
 @not_logged_in

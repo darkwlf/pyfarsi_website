@@ -23,21 +23,21 @@ class Articles(ListView):
         return article_query
 
 
-class ArticleDetailView(DetailView):
+class ArticleDetail(DetailView):
     context_object_name = 'Article'
     template_name = 'blog/article_detail.html'
     model = Article
 
 
-class CreateCommentView(CreateAPIView):
+class CreateComments(CreateAPIView):
     queryset = Comment.objects.all()
     serializer_class = CreateComment
 
 
-class GetCommentsView(ListAPIView):
+class GetComments(ListAPIView):
     serializer_class = GetComment
     pagination_class = CommentPaginator
 
     def get_queryset(self):
         article_id = self.kwargs['pk']
-        return Comment.objects.filter(id=article_id)
+        return Comment.objects.filter(article__id=article_id)

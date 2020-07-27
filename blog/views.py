@@ -1,6 +1,5 @@
 from django.db.models import Q
 from .models import Article, Comment
-from .paginators import CommentPaginator
 from .serializers import CreateComment, GetComment
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView

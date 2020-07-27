@@ -1,6 +1,5 @@
 from django.contrib import admin
-
-from utils.functions import check_self_article_or_supper_user
+from utils.functions import check_author_or_superuser
 from . import models
 from django.http import HttpRequest
 
@@ -32,10 +31,10 @@ class Article(admin.ModelAdmin):
         return ', '.join([category.name for category in categories.objects.all()[:5]])
 
     def has_delete_permission(self, request: HttpRequest, obj: models.Article = None):
-        return super().has_delete_permission(request, obj) and check_self_article_or_supper_user(request, obj)
+        return super().has_delete_permission(request, obj) and check_author_or_superuser(request, obj)
 
     def has_change_permission(self, request: HttpRequest, obj: models.Article = None):
-        return super().has_change_permission(request, obj) and check_self_article_or_supper_user(request, obj)
+        return super().has_change_permission(request, obj) and check_author_or_superuser(request, obj)
 
 
 @admin.register(models.Comment)

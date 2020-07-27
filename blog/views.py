@@ -25,11 +25,8 @@ class Articles(ListView):
 
 class ArticleDetail(DetailView):
     model = Article
-    template_name = "blog/article_detail.html"
-    context_object_name = 'article'
-    
-    def get_queryset(self):
-        query = Article.objects.filter(status='p')
+    template_name = 'blog/article.html'
+    queryset = Article.objects.filter(status='p')
 
 
 class CreateComments(CreateAPIView):

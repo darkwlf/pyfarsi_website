@@ -36,8 +36,6 @@ class CreateComments(CreateAPIView):
 
 class GetComments(ListAPIView):
     serializer_class = GetComment
-    pagination_class = CommentPaginator
 
     def get_queryset(self):
-        article_id = self.kwargs['pk']
-        return Comment.objects.filter(article__id=article_id)
+        return Comment.objects.filter(article__id=self.kwargs['pk'])

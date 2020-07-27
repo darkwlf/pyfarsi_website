@@ -110,6 +110,14 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# RestFramework configurations
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ]
+}
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 

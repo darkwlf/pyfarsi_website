@@ -22,7 +22,7 @@ class Articles(ListView):
         return article_query
 
 
-class ArticleDetailView(ListView):
+class ArticleDetailView(DetailView):
     context_object_name = 'Article'
     template_name = 'blog/article_detail.html'
     model = Article

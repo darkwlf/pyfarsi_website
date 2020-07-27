@@ -12,8 +12,7 @@ class Articles(ListView):
     paginate_by = 9
 
     def get_queryset(self):
-        query = self.request.GET.get('q')
-        if query:
+        if query := self.request.GET.get('q'):
             article_query = Article.objects.filter(
                 Q(title__icontains=query) | Q(content__icontains=query)
             )

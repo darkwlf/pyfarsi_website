@@ -7,4 +7,4 @@ def get_sub_category(category: Category):
     else:
         for sub in subs:
             yield sub
-            get_sub_category(sub)
+            yield from get_sub_category(sub)

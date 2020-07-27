@@ -4,6 +4,7 @@ from .serializers import CreateComment, GetComment
 from django.views.generic import ListView
 from django.views.generic.detail import DetailView
 from rest_framework.generics import CreateAPIView, ListAPIView
+from utils import get_sub_category
 
 
 class Articles(ListView):
@@ -13,12 +14,17 @@ class Articles(ListView):
 
     def get_queryset(self):
         if query := self.request.GET.get('q'):
-            article_query = Article.objects.filter(
+            articles = Article.objects.filter(
                 Q(title__icontains=query) | Q(content__icontains=query)
             )
         else:
-            article_query = Article.objects.all()
-        return article_query
+            articles = Article.objects.all()
+        if all_categories := self.request.GET.get('categories'):
+            all_categories = [
+                category for main_category in all_categories for category in get_sub_category(main_category)
+            ]
+            articles = articles.filter(categories__name__in=all_categories)
+        return articles
 
 
 class ArticleDetail(DetailView):

@@ -1,6 +1,6 @@
 from django.contrib.auth import views as auth_views
 from utils.mixins import LoginRequired
-from utils.decorators import not_logged_in
+from utils import not_logged_in, LoginRequired, NotLoggedIn
 from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import CreateView
@@ -38,7 +38,7 @@ class PasswordResetComplete(auth_views.PasswordResetCompleteView):
     template_name = 'account/password_reset_complete.html'
 
 
-class RegisterView(CreateView):
+class RegisterView(NotLoggedIn, CreateView):
     form_class = Register
     success_url = 'account:register_complete'
 

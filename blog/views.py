@@ -1,6 +1,8 @@
 from django.db.models import Q
-from .models import Article
+from .models import Article, Comment
+from .serializers import CreateCommentSerializer
 from django.views.generic import ListView
+from rest_framework.generics import CreateAPIView
 
 
 class Articles(ListView):
@@ -17,3 +19,8 @@ class Articles(ListView):
         else:
             article_query = Article.objects.all()
         return article_query
+
+
+class CreateCommentView(CreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CreateCommentSerializer

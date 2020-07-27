@@ -40,6 +40,7 @@ class PasswordResetComplete(auth_views.PasswordResetCompleteView):
 
 class RegisterView(CreateView):
     form_class = Register
+    template_name = 'account/register.html'
     success_url = 'account:register_complete'
 
     def form_valid(self, form):

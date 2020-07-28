@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField
-from .models import Comment
+from .models import Comment, Article
 from account.models import User
 
 
@@ -19,7 +19,7 @@ class GetComment(ModelSerializer):
 
 
 class CreateComment(ModelSerializer):
-    article = PrimaryKeyRelatedField()
+    article = PrimaryKeyRelatedField(queryset=Article.objects)
 
     class Meta:
         model = Comment

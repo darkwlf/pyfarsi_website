@@ -1,5 +1,9 @@
 from django.contrib.auth import views as auth_views
-from utils.mixins import LoginRequired
+from django.template.loader import render_to_string
+from django.core.mail import send_mail
+from .models import Validation
+from django.utils.html import strip_tags
+from .tasks import remove_user
 from utils import not_logged_in, LoginRequired, NotLoggedIn
 from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
@@ -45,8 +49,24 @@ class RegisterView(NotLoggedIn, CreateView):
     def form_valid(self, form):
         temp_user = form.save(False)
         temp_user.set_password(temp_user.password)
-        temp_user.save()
-        return redirect(self.get_success_url)
+        instance = temp_user.save()
+        email_template = render_to_string(
+            'account/email_validation.html',
+            {
+                'user': instance,
+                'validation': Validation.objects.create(user=instance).key,
+                'base_domain': f'https://{settings.ALLOWED_HOSTS[0]}/'
+            }
+        )
+        send_mail(
+            'فعال سازی حساب',
+            strip_tags(email_template),
+            settings.EMAIL_HOST_USER,
+            (instance.email,),
+            html_message=email_template
+        )
+        remove_user(instance.username)
+        return redirect(self.success_url)
 
 
 @not_logged_in

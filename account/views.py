@@ -80,3 +80,12 @@ def verify_email(request, key):
     user.is_active = True
     user.save()
     return render(request, 'account/verify_email.html')
+
+
+class ProfileView(LoginRequired, UpdateView):
+    model = User
+    form_class = Profile
+    template_name = 'account/profile.html'
+
+    def get_object(self, queryset=None):
+        return self.request.user

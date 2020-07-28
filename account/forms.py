@@ -1,33 +1,19 @@
 from django import forms
 from .models import User
-from phonenumber_field.widgets import PhoneNumberPrefixWidget
 from django.contrib.auth.password_validation import validate_password
+from django.utils.translation import gettext_lazy as _
+from .widgets import user_widgets
 
 
 class Register(forms.ModelForm):
     password_confirm = forms.CharField(
-        max_length=50, label='تکرار پسورد', widget=forms.PasswordInput({'placeholder': 'تکرار گذرواژه'})
+        max_length=50, label=_('Password Repeat'), widget=forms.PasswordInput({'placeholder': _('Password Repeat')})
     )
 
     class Meta:
         model = User
         exclude = ('date_joined', 'is_active', 'is_superuser', 'is_staff')
-        labels = {
-            'username': 'یوزرنیم',
-            'password': 'پسورد',
-            'email': 'ایمیل',
-            'first_name': 'نام',
-            'last_name': 'نام خانوادگی',
-            'phone_number': 'شماره تلفن'
-        }
-        widgets = {
-            'username': forms.TextInput({'placeholder': 'نام کاربری'}),
-            'email': forms.TextInput({'placeholder': 'پست الکترونیکی'}),
-            'password': forms.PasswordInput({'placeholder': 'گذرواژه'}),
-            'first_name': forms.TextInput({'placeholder': 'نام'}),
-            'last_name': forms.TextInput({'placeholder': 'نام خانوادگی'}),
-            'phone_number': PhoneNumberPrefixWidget({'placeholder': 'شماره تلفن'})
-        }
+        widgets = user_widgets
 
     def clean_password(self):
         del self.cleaned_data['groups']
@@ -38,7 +24,7 @@ class Register(forms.ModelForm):
         super().clean()
         if self.cleaned_data.get('password') and self.cleaned_data.get('password_confirm') and \
                 self.cleaned_data['password'] != self.cleaned_data.pop('password_confirm'):
-            self.add_error('password_confirm', 'پسورد های وارد شده یکسان نیستند !')
+            self.add_error('password_confirm', _('Entered passwords are not the same !'))
 
 
 class Profile(forms.ModelForm):
@@ -51,17 +37,4 @@ class Profile(forms.ModelForm):
     class Meta:
         model = User
         fields = ('username', 'email', 'first_name', 'last_name', 'phone_number')
-        labels = {
-                'username': 'یوزرنیم',
-                'email': 'ایمیل',
-                'first_name': 'نام',
-                'last_name': 'نام خانوادگی',
-                'phone_number': 'شماره تلفن'
-        }
-        widgets = {
-                'username': forms.TextInput({'placeholder': 'نام کاربری'}),
-                'email': forms.TextInput({'placeholder': 'پست الکترونیکی'}),
-                'first_name': forms.TextInput({'placeholder': 'نام'}),
-                'last_name': forms.TextInput({'placeholder': 'نام خانوادگی'}),
-                'phone_number': PhoneNumberPrefixWidget({'placeholder': 'شماره تلفن', 'disabled': True})
-            }
+        widgets = user_widgets

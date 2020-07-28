@@ -2,6 +2,8 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from phonenumber_field.modelfields import PhoneNumberField
 from uuid import uuid4
+from django.utils.translation import gettext_lazy as _
+from . import translations
 
 
 class User(AbstractUser):
@@ -9,13 +11,13 @@ class User(AbstractUser):
         super().__init__(*args, **kwargs)
         self.__password = self.password
 
-    email = models.EmailField(verbose_name='Email', unique=True)
-    is_active = models.BooleanField(verbose_name='Is Active', default=False)
-    first_name = models.CharField(max_length=30, verbose_name='First Name')
-    last_name = models.CharField(max_length=30, verbose_name='Last Name')
-    phone_number = PhoneNumberField(verbose_name='Phone Number')
-    password = models.CharField(verbose_name='Password', help_text='Hashed Password', max_length=128)
-    ip = models.GenericIPAddressField(verbose_name='Last IP', null=True, blank=True)
+    email = models.EmailField(verbose_name=translations.email, unique=True)
+    is_active = models.BooleanField(verbose_name=_('Is Active'), default=False)
+    first_name = models.CharField(max_length=30, verbose_name=translations.first_name)
+    last_name = models.CharField(max_length=30, verbose_name=translations.last_name)
+    phone_number = PhoneNumberField(verbose_name=translations.phone_number)
+    password = models.CharField(verbose_name='Password', help_text=_('Encrypted Password'), max_length=128)
+    ip = models.GenericIPAddressField(verbose_name=_('Last IP Address'), null=True, blank=True)
     REQUIRED_FIELDS = ('first_name', 'last_name', 'email', 'phone_number')
 
     class Meta:
@@ -32,8 +34,8 @@ class User(AbstractUser):
 
 
 class Validation(models.Model):
-    key = models.UUIDField(default=uuid4, verbose_name='Validation Key', primary_key=True)
-    user = models.ForeignKey(User, models.CASCADE, 'validations_user')
+    key = models.UUIDField(default=uuid4, verbose_name=_('Validation Key'), primary_key=True)
+    user = models.ForeignKey(User, models.CASCADE, 'validations_user', verbose_name=_('User'))
 
     class Meta:
         db_table = 'pyfarsi_validations'

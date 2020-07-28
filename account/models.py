@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 from phonenumber_field.modelfields import PhoneNumberField
 from uuid import uuid4
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext_lazy
 from . import translations
 
 
@@ -12,16 +12,16 @@ class User(AbstractUser):
         self.__password = self.password
 
     email = models.EmailField(verbose_name=translations.email, unique=True)
-    is_active = models.BooleanField(verbose_name=_('active'), default=False)
+    is_active = models.BooleanField(verbose_name=gettext_lazy('active'), default=False)
     first_name = models.CharField(max_length=30, verbose_name=translations.first_name)
     last_name = models.CharField(max_length=30, verbose_name=translations.last_name)
     phone_number = PhoneNumberField(verbose_name=translations.phone_number)
-    ip = models.GenericIPAddressField(verbose_name=_('IP address'), null=True, blank=True)
+    ip = models.GenericIPAddressField(verbose_name=gettext_lazy('IP address'), null=True, blank=True)
     REQUIRED_FIELDS = ('first_name', 'last_name', 'email', 'phone_number')
 
     class Meta:
         verbose_name = translations.user
-        verbose_name_plural = _('users')
+        verbose_name_plural = gettext_lazy('users')
         db_table = 'pyfarsi_users'
         ordering = ('-date_joined',)
 
@@ -35,10 +35,13 @@ class User(AbstractUser):
 
 
 class Validation(models.Model):
-    key = models.UUIDField(default=uuid4, verbose_name=_('validation key'), primary_key=True)
+    key = models.UUIDField(default=uuid4, verbose_name=gettext_lazy('validation key'), primary_key=True)
     user = models.ForeignKey(User, models.CASCADE, 'validations_user', verbose_name=translations.user)
 
     class Meta:
-        verbose_name = _('validation')
+        verbose_name = gettext_lazy('validation')
         db_table = 'pyfarsi_validations'
         ordering = ('-user__date_joined',)
+
+    def __str__(self):
+        return self.user.username

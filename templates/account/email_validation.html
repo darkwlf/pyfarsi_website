@@ -1,4 +1,4 @@
 <body>
     <p>{{ user.first_name }}</p>
-    <a href="{{ base_domain }}{{ validation_url }}"> Validation url </a>
+    <a href="{{ base_domain }}{% url 'account:verify_email' key %}"> Validation url </a>
 </body>

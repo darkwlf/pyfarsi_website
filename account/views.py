@@ -51,14 +51,11 @@ class RegisterView(NotLoggedIn, CreateView):
         temp_user = form.save(False)
         temp_user.set_password(temp_user.password)
         temp_user.save()
-        from django.urls import reverse
         email_template = render_to_string(
             'account/email_validation.html',
             {
                 'user': temp_user,
-                'validation_url': reverse(
-                    'account:verify_email', kwargs={'key': Validation.objects.create(user=temp_user).key}
-                ),
+                'key': Validation.objects.create(user=temp_user).key,
                 'base_domain': f'https://{settings.ALLOWED_HOSTS[0]}'
             }
         )

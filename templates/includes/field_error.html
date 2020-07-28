@@ -1,7 +1,7 @@
 {% if field.errors %}
-    <li>
+    <ol>
         {% for error in field.errors %}
             <li>{{ error }}</li>
         {% endfor %}
-    </li>
+    </ol>
 {% endif %}

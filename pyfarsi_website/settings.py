@@ -24,9 +24,7 @@ SECRET_KEY = '737ac78c0505318e38c24ffe380a9751'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    'localhost',
-]
+ALLOWED_HOSTS = {'localhost'}
 
 # Application definition
 
@@ -118,7 +116,7 @@ REST_FRAMEWORK = {
 # Internationalization
 # https://docs.djangoproject.com/en/3.0/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fa-IR'
 
 TIME_ZONE = 'UTC'
 

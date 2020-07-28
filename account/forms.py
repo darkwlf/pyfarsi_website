@@ -1,6 +1,7 @@
 from django import forms
 from .models import User
 from phonenumber_field.widgets import PhoneNumberPrefixWidget
+from django.contrib.auth.password_validation import validate_password
 
 
 class Register(forms.ModelForm):
@@ -11,10 +12,6 @@ class Register(forms.ModelForm):
     class Meta:
         model = User
         exclude = ('date_joined', 'is_active', 'is_superuser', 'is_staff')
-        error_messages = {
-            'username': {'unique': 'این نام کاربری قبلا ثبت شده است !'},
-            'email': {'unique': 'این ایمیل قبلا توسط فرد دیگری استفاده شده است .'}
-        }
         labels = {
             'username': 'یوزرنیم',
             'password': 'پسورد',
@@ -31,6 +28,11 @@ class Register(forms.ModelForm):
             'last_name': forms.TextInput({'placeholder': 'نام خانوادگی'}),
             'phone_number': PhoneNumberPrefixWidget({'placeholder': 'شماره تلفن'})
         }
+
+    def clean_password(self):
+        del self.cleaned_data['groups']
+        del self.cleaned_data['user_permissions']
+        validate_password(self.cleaned_data['password'], User(**self.cleaned_data))
 
     def clean(self):
         super().clean()

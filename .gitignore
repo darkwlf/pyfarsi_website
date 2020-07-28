@@ -134,3 +134,6 @@ dmypy.json
 
 # migrations
 **/migrations/**
+
+# ck-editor
+**/ckeditor/**

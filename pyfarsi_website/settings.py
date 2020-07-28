@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'rest_framework',
+    'background_task',
     # Local
     'account.apps.AccountConfig',
     'blog.apps.BlogConfig'

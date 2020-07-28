@@ -1,15 +1,15 @@
 from django.contrib.auth import views as auth_views
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
-from .models import Validation
+from .models import Validation, User
 from django.utils.html import strip_tags
 from .tasks import remove_user
 from utils import not_logged_in, LoginRequired, NotLoggedIn
 from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView
 from . import models
-from .forms import Register
+from .forms import Register, Profile
 
 
 class Login(auth_views.LoginView):

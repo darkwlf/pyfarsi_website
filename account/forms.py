@@ -40,25 +40,28 @@ class Register(forms.ModelForm):
                 self.cleaned_data['password'] != self.cleaned_data.pop('password_confirm'):
             self.add_error('password_confirm', 'پسورد های وارد شده یکسان نیستند !')
 
-class Profile(forms.ModelForm):
-    model = User
-    exclude = ('date_joined', 'is_active', 'is_superuser', 'is_staff', 'password')
-    error_messages = {
-            'username': {'unique': 'این نام کاربری قبلا ثبت شده است !'},
-            'email': {'unique': 'این ایمیل قبلا توسط فرد دیگری استفاده شده است .'}
-    }
-    labels = {
-            'username': 'یوزرنیم',
-            'email': 'ایمیل',
-            'first_name': 'نام',
-            'last_name': 'نام خانوادگی',
-            'phone_number': 'شماره تلفن'
-    }
-    widgets = {
-            'username': forms.TextInput({'placeholder': 'نام کاربری'}),
-            'email': forms.TextInput({'placeholder': 'پست الکترونیکی'}),
-            'first_name': forms.TextInput({'placeholder': 'نام'}),
-            'last_name': forms.TextInput({'placeholder': 'نام خانوادگی'}),
-            'phone_number': PhoneNumberPrefixWidget({'placeholder': 'شماره تلفن'})
-        }
 
+class Profile(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        for field in ('email', 'username', 'phone_number'):
+            self.fields[field].disabled = True
+            self.fields[field].required = False
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'first_name', 'last_name', 'phone_number')
+        labels = {
+                'username': 'یوزرنیم',
+                'email': 'ایمیل',
+                'first_name': 'نام',
+                'last_name': 'نام خانوادگی',
+                'phone_number': 'شماره تلفن'
+        }
+        widgets = {
+                'username': forms.TextInput({'placeholder': 'نام کاربری'}),
+                'email': forms.TextInput({'placeholder': 'پست الکترونیکی'}),
+                'first_name': forms.TextInput({'placeholder': 'نام'}),
+                'last_name': forms.TextInput({'placeholder': 'نام خانوادگی'}),
+                'phone_number': PhoneNumberPrefixWidget({'placeholder': 'شماره تلفن', 'disabled': True})
+            }

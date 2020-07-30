@@ -6,10 +6,10 @@ from django.http import HttpRequest
 
 @admin.register(models.Category)
 class Category(admin.ModelAdmin):
-    list_display = ('name', 'slug', 'sub_category')
-    search_fields = ('name', 'slug', 'sub_category__name')
+    list_display = ('name', 'sub_category')
+    search_fields = ('name', 'sub_category__name')
     list_per_page = 15
-    fieldsets = (('Information', {'fields': ('name', 'slug', 'sub_category')}),)
+    fieldsets = (('Information', {'fields': ('name', 'sub_category')}),)
 
 
 @admin.register(models.Article)

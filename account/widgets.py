@@ -1,5 +1,5 @@
 from django import forms
-from . import translations
+from utils import translations
 from phonenumber_field.widgets import PhoneNumberPrefixWidget
 user_widgets = {
     'username': forms.TextInput({'placeholder': translations.username}),

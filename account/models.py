@@ -3,7 +3,7 @@ from django.contrib.auth.models import AbstractUser
 from phonenumber_field.modelfields import PhoneNumberField
 from uuid import uuid4
 from django.utils.translation import gettext_lazy
-from . import translations
+from utils import translations
 
 
 class User(AbstractUser):

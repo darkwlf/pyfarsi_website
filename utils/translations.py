@@ -1,7 +1,7 @@
 from django.utils.translation import gettext_lazy
 username = gettext_lazy('username')
 phone_number = gettext_lazy('phone number')
-first_name = gettext_lazy('name')
+name = gettext_lazy('name')
 last_name = gettext_lazy('last name')
 email = gettext_lazy('email address')
 password = gettext_lazy('password')
@@ -18,3 +18,4 @@ description = gettext_lazy('description')
 slug = gettext_lazy('slug')
 group = gettext_lazy('group')
 pending = gettext_lazy('pending')
+snippet = gettext_lazy('snippet')

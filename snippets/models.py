@@ -4,6 +4,7 @@ from django.utils.translation import gettext_lazy
 from uuid import uuid4
 from django.shortcuts import reverse
 from account.models import User
+from ckeditor.fields import RichTextField
 
 
 class Group(models.Model):
@@ -11,12 +12,12 @@ class Group(models.Model):
         public = 'p', gettext_lazy('public')
         private = 'n', gettext_lazy('private')
 
-    title = models.CharField(max_length=100, verbose_name=translations.title)
+    name = models.CharField(max_length=100, verbose_name=translations.name)
     description = models.TextField(max_length=800, verbose_name=translations.description)
     type = models.CharField(max_length=1, verbose_name=gettext_lazy('type'), choices=Type.choices)
     logo = models.ImageField(upload_to='logos/', verbose_name=gettext_lazy('logo'), null=True, blank=True)
     creation_date = models.DateField(verbose_name=translations.creation_date, auto_now_add=True)
-    slug = models.SlugField(verbose_name=translations.slug)
+    slug = models.SlugField(verbose_name=translations.slug, max_length=50)
 
     class Meta:
         verbose_name = translations.group
@@ -28,7 +29,7 @@ class Group(models.Model):
         return reverse('snippets:group', self.id, self.slug)
 
     def __str__(self):
-        return f'{self.id} : {self.title}'
+        return f'{self.id} : {self.name}'
 
 
 class Member(models.Model):
@@ -43,7 +44,7 @@ class Member(models.Model):
         db_table = 'pyfarsi_members'
 
     def get_absolute_url(self):
-        return reverse('snippets:member')
+        return reverse('snippets:member', self.id)
 
     def __str__(self):
         return f'{self.id} : {self.user} - {self.group}'
@@ -102,3 +103,36 @@ class UserInvite(models.Model):
 
     def __str__(self):
         return f'{self.id} : {self.status}'
+
+
+class Snippet(models.Model):
+    class Status(models.TextChoices):
+        open = 'o', gettext_lazy('open')
+        closed = 'c', gettext_lazy('closed')
+
+    name = models.CharField(max_length=100, verbose_name=translations.name)
+    description = RichTextField(verbose_name=translations.description)
+    code = models.FileField(upload_to='protected/codes/', verbose_name=gettext_lazy('code file'))
+    creation_date = models.DateField(verbose_name=translations.creation_date, auto_now_add=True)
+    status = models.CharField(
+        max_length=1, verbose_name=translations.status, choices=Status.choices, default=Status.open
+    )
+    user = models.ForeignKey(
+        User, models.SET_NULL, 'snippet_user', verbose_name=translations.user, blank=True, null=True
+    )
+    group = models.ForeignKey(
+        Group, models.SET_NULL, 'snippet_group', verbose_name=translations.group, blank=True, null=True
+    )
+    slug = models.SlugField(max_length=50)
+
+    class Meta:
+        ordering = ('id',)
+        verbose_name = translations.snippet
+        verbose_name_plural = gettext_lazy('snippets')
+        db_table = 'pyfarsi_snippets'
+
+    def get_absolute_url(self):
+        return reverse('snippets:snippet', self.id, self.slug)
+
+    def __str__(self):
+        return f'{self.name} : {self.status}'

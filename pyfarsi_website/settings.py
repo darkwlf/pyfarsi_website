@@ -44,7 +44,8 @@ INSTALLED_APPS = [
     'background_task',
     # Local
     'account.apps.AccountConfig',
-    'blog.apps.BlogConfig'
+    'blog.apps.BlogConfig',
+    'snippets.apps.SnippetsConfig'
 ]
 
 MIDDLEWARE = [

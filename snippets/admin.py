@@ -7,12 +7,12 @@ class Group(admin.ModelAdmin):
     list_display = ('id', 'name', 'type', 'creation_date')
     search_fields = ('name',)
     list_filter = ('type',)
-    readonly_fields = ('creation_date',)
+    readonly_fields = ('creation_date', 'id')
     date_hierarchy = 'creation_date'
-    prepopulated_fields = {'slug': ('title',)}
+    prepopulated_fields = {'slug': ('name',)}
     list_per_page = 15
     fieldsets = (
-        ('Information', {'fields': ('id', 'logo', ('title', 'slug'), 'description')}),
+        ('Information', {'fields': ('id', 'logo', ('name', 'slug'), 'description')}),
         ('Status', {'fields': ('type', 'creation_date')})
     )
 
@@ -22,7 +22,7 @@ class Member(admin.ModelAdmin):
     list_display = ('id', 'group', 'user', 'date_joined')
     search_fields = ('group__name', 'user__username', 'user__email', 'user__first_name', 'user__last_name')
     list_filter = ('group__type', 'user__is_staff')
-    readonly_fields = ('date_joined',)
+    readonly_fields = ('date_joined', 'id')
     date_hierarchy = 'date_joined'
     list_per_page = 15
     fieldsets = (

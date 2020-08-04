@@ -7,7 +7,7 @@ class User(admin.ModelAdmin):
     list_display = ('id', 'username', 'email', 'date_joined', 'is_staff', 'is_active', 'last_login')
     list_per_page = 15
     search_fields = ('username', 'email', 'first_name', 'last_name')
-    readonly_fields = ('date_joined', 'last_login', 'password')
+    readonly_fields = ('date_joined', 'last_login', 'password', 'id')
     date_hierarchy = 'date_joined'
     filter_horizontal = ('user_permissions', 'groups')
     fieldsets = (

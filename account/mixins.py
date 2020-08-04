@@ -2,7 +2,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin, AccessMixin
 from django.http import HttpRequest
 from ipware import get_client_ip
 from django.shortcuts import redirect
-from django.contrib.auth.password_validation import UserAttributeSimilarityValidator
 
 
 class LoginRequired(LoginRequiredMixin):

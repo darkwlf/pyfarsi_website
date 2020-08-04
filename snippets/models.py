@@ -3,6 +3,7 @@ from utils import translations
 from django.utils.translation import gettext_lazy
 from uuid import uuid4
 from django.shortcuts import reverse
+from account.models import User
 
 
 class Group(models.Model):
@@ -51,5 +52,35 @@ class InviteLink(models.Model):
     class Meta:
         verbose_name = gettext_lazy('invitation link')
         verbose_name_plural = gettext_lazy('invitation links')
-        db_table = 'pyfarsi_invites'
+        db_table = 'pyfarsi_invite_links'
         ordering = ('invite_id',)
+
+
+class UserInvite(models.Model):
+    class Status(models.TextChoices):
+        pending = 'p', translations.pending
+        accepted = 'a', gettext_lazy('accepted')
+        denied = 'd', gettext_lazy('denied')
+
+    creation_date = models.DateField(verbose_name=translations.creation_date, auto_now_add=True)
+    user = models.ForeignKey(
+        User, models.SET_NULL, 'invite_user', verbose_name=translations.user, null=True, blank=True
+    )
+    group = models.ForeignKey(
+        Group, models.SET_NULL, 'user_invite_group', verbose_name=translations.group, null=True, blank=True
+    )
+    status = models.CharField(
+        max_length=1, verbose_name=translations.status, choices=Status.choices, default=Status.pending
+    )
+
+    class Meta:
+        verbose_name = gettext_lazy('user invitation')
+        verbose_name_plural = gettext_lazy('user invitations')
+        db_table = 'pyfarsi_user_invites'
+        ordering = ('id',)
+
+    def get_absolute_url(self):
+        return reverse('snippets:invite', self.id)
+
+    def __str__(self):
+        return f'{self.id} : {self.status}'

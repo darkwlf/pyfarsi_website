@@ -46,7 +46,7 @@ class Comment(admin.ModelAdmin):
     list_per_page = 15
     readonly_fields = ('date', 'id')
     fieldsets = (
-        ('Information', {'fields': ('id', ('article',),)}),
+        ('Information', {'fields': ('id', 'article',)}),
         ('Status', {'fields': ('status', 'date')}),
         ('Content', {'fields': ('content',)})
     )

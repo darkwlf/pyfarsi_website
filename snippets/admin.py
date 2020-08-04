@@ -4,7 +4,7 @@ from . import models
 
 @admin.register(models.Group)
 class Group(admin.ModelAdmin):
-    list_display = ('name', 'type', 'creation_date')
+    list_display = ('id', 'name', 'type', 'creation_date')
     search_fields = ('name',)
     list_filter = ('type',)
     readonly_fields = ('creation_date',)
@@ -12,7 +12,7 @@ class Group(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
     list_per_page = 15
     fieldsets = (
-        ('Information', {'fields': ('logo', ('title', 'slug'), 'description')}),
+        ('Information', {'fields': ('id', 'logo', ('title', 'slug'), 'description')}),
         ('Status', {'fields': ('type', 'creation_date')})
     )
 

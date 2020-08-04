@@ -62,7 +62,7 @@ class Article(models.Model):
 
 class Comment(models.Model):
     class Status(models.TextChoices):
-        PENDING = 'w', gettext_lazy('pending')
+        PENDING = 'w', translations.pending
         PUBLISHED = 'p', translations.published
 
     author = models.ForeignKey(settings.AUTH_USER_MODEL, models.CASCADE, 'comment_author')

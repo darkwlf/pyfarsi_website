@@ -13,7 +13,7 @@ class User(AbstractUser):
 
     email = models.EmailField(verbose_name=translations.email, unique=True)
     is_active = models.BooleanField(verbose_name=gettext_lazy('active'), default=False)
-    first_name = models.CharField(max_length=30, verbose_name=translations.first_name)
+    first_name = models.CharField(max_length=30, verbose_name=translations.name)
     last_name = models.CharField(max_length=30, verbose_name=translations.last_name)
     phone_number = PhoneNumberField(verbose_name=translations.phone_number)
     ip = models.GenericIPAddressField(verbose_name=gettext_lazy('IP address'), null=True, blank=True)

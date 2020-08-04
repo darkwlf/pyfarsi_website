@@ -4,7 +4,8 @@ from django.core.mail import send_mail
 from .models import Validation, User
 from django.utils.html import strip_tags
 from .tasks import remove_user
-from utils import not_logged_in, LoginRequired, NotLoggedIn
+from .decorators import not_logged_in
+from .mixins import LoginRequired, NotLoggedIn
 from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import CreateView, UpdateView

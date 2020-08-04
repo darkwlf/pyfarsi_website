@@ -32,7 +32,7 @@ class Article(models.Model):
         DRAFT = 'd', gettext_lazy('draft')
         PUBLISHED = 'p', translations.published
 
-    title = models.CharField(max_length=220, verbose_name=gettext_lazy('title'))
+    title = models.CharField(max_length=220, verbose_name=translations.title)
     content = RichTextUploadingField(verbose_name=translations.content)
     author = models.ForeignKey(
         settings.AUTH_USER_MODEL,
@@ -44,7 +44,7 @@ class Article(models.Model):
     )
     date = models.DateTimeField(auto_now_add=True, verbose_name=translations.creation_date)
     status = models.CharField(max_length=1, choices=Status.choices, verbose_name=translations.status)
-    slug = models.SlugField(max_length=50, verbose_name=gettext_lazy('slug'))
+    slug = models.SlugField(max_length=50, verbose_name=translations.slug)
     categories = models.ManyToManyField(Category, 'article_categories', verbose_name=translations.categories)
     thumb = models.ImageField(verbose_name=gettext_lazy('thumbnail'), upload_to='thumbs/')
 

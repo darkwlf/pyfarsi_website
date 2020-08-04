@@ -14,15 +14,15 @@ class Category(admin.ModelAdmin):
 
 @admin.register(models.Article)
 class Article(admin.ModelAdmin):
-    list_display = ('title', 'author', 'date', 'status', 'get_categories')
+    list_display = ('id', 'title', 'author', 'date', 'status', 'get_categories')
     search_fields = ('author__username', 'author__email', 'title', 'category__name')
     list_filter = ('status', 'author__is_staff')
     date_hierarchy = 'date'
     prepopulated_fields = {'slug': ('title',)}
     list_per_page = 15
-    readonly_fields = ('date',)
+    readonly_fields = ('date', 'id')
     fieldsets = (
-        ('Information', {'fields': (('title', 'slug'), 'categories')}),
+        ('Information', {'fields': ('id', ('title', 'slug'), 'categories')}),
         ('Status', {'fields': ('status', 'date')}),
         ('Content', {'fields': ('content',)})
     )
@@ -39,14 +39,14 @@ class Article(admin.ModelAdmin):
 
 @admin.register(models.Comment)
 class Comment(admin.ModelAdmin):
-    list_display = ('date', 'author', 'article', 'status')
+    list_display = ('id', 'date', 'author', 'article', 'status')
     search_fields = ('author__username', 'author__email', 'article__title', 'content')
     list_filter = ('status', 'author__is_staff')
     date_hierarchy = 'date'
     list_per_page = 15
-    readonly_fields = ('date',)
+    readonly_fields = ('date', 'id')
     fieldsets = (
-        ('Information', {'fields': (('article',),)}),
+        ('Information', {'fields': ('id', ('article',),)}),
         ('Status', {'fields': ('status', 'date')}),
         ('Content', {'fields': ('content',)})
     )

@@ -24,11 +24,29 @@ class Group(models.Model):
         ordering = ('id',)
         db_table = 'pyfarsi_groups'
 
+    def get_absolute_url(self):
+        return reverse('snippets:group', self.id, self.slug)
+
     def __str__(self):
         return f'{self.id} : {self.title}'
 
+
+class Member(models.Model):
+    group = models.ForeignKey(Group, models.CASCADE, 'member_group', verbose_name=translations.group)
+    user = models.ForeignKey(User, models.CASCADE, 'member_user', verbose_name=translations.user)
+    date_joined = models.DateTimeField(gettext_lazy('date joined'), auto_now_add=True)
+
+    class Meta:
+        verbose_name = gettext_lazy('member')
+        verbose_name_plural = gettext_lazy('members')
+        ordering = ('id',)
+        db_table = 'pyfarsi_members'
+
     def get_absolute_url(self):
-        return reverse('snippets:group', self.id, self.slug)
+        return reverse('snippets:member')
+
+    def __str__(self):
+        return f'{self.id} : {self.user} - {self.group}'
 
 
 class InviteLink(models.Model):
@@ -43,17 +61,17 @@ class InviteLink(models.Model):
         max_length=1, verbose_name=translations.status, choices=Status.choices, default=Status.active
     )
 
-    def get_absolute_url(self):
-        return reverse('snippets:join_group', self.invite_id)
-
-    def __str__(self):
-        return f'{self.invite_id} : {self.status}'
-
     class Meta:
         verbose_name = gettext_lazy('invitation link')
         verbose_name_plural = gettext_lazy('invitation links')
         db_table = 'pyfarsi_invite_links'
         ordering = ('invite_id',)
+
+    def get_absolute_url(self):
+        return reverse('snippets:join_group', self.invite_id)
+
+    def __str__(self):
+        return f'{self.invite_id} : {self.status}'
 
 
 class UserInvite(models.Model):

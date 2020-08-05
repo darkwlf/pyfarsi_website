@@ -55,12 +55,13 @@ class InviteLink(models.Model):
         active = 'a', gettext_lazy('active')
         revoked = 'r', gettext_lazy('revoked')
 
-    invite_id = models.UUIDField(verbose_name=gettext_lazy('invitation ID'), default=uuid4)
+    invite_id = models.UUIDField(verbose_name=gettext_lazy('invitation ID'), default=uuid4, primary_key=True)
     users_joined = models.IntegerField(verbose_name=gettext_lazy('users joined'), default=0)
     group = models.ForeignKey(Group, models.CASCADE, 'invite_link_group', verbose_name=translations.group)
     status = models.CharField(
         max_length=1, verbose_name=translations.status, choices=Status.choices, default=Status.active
     )
+    creation_date = models.DateTimeField(auto_now_add=True, verbose_name=translations.creation_date)
 
     class Meta:
         verbose_name = gettext_lazy('invitation link')

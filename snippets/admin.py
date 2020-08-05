@@ -39,7 +39,7 @@ class InviteLink(admin.ModelAdmin):
     readonly_fields = ('invite_id',)
     list_per_page = 15
     fieldsets = (
-        ('Information', {'fields': ('invite_id', 'group', 'users_joind')}),
+        ('Information', {'fields': ('invite_id', 'group', 'users_joined')}),
         ('Status', {'fields': ('status',)})
     )
 
@@ -55,4 +55,20 @@ class UserInvite(admin.ModelAdmin):
     fieldsets = (
         ('Information', {'fields': (('user', 'group'),)}),
         ('Status', {'fields': ('status', 'creation_date')})
+    )
+
+
+@admin.register(models.Snippet)
+class Snippet(admin.ModelAdmin):
+    list_display = ('name', 'user', 'group', 'status', 'creation_date')
+    search_fields = ('name', 'group__name', 'user__username', 'user__email', 'user__first_name', 'user__last_name')
+    list_filter = ('status', 'group__type', 'user__is_staff')
+    readonly_fields = ('creation_date',)
+    date_hierarchy = 'creation_date'
+    prepopulated_fields = {'slug': ('name',)}
+    list_per_page = 15
+    fieldsets = (
+        ('Information', {'fields': (('name', 'slug'), 'code', ('group', 'user'))}),
+        ('Status', {'fields': ('status', 'creation_date')}),
+        ('Description', {'fields': ('description',)})
     )

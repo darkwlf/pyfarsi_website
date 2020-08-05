@@ -46,10 +46,10 @@ class InviteLink(admin.ModelAdmin):
 
 @admin.register(models.UserInvite)
 class UserInvite(admin.ModelAdmin):
-    list_display = ('user', 'group', 'status', 'creation_date')
+    list_display = ('id', 'user', 'group', 'status', 'creation_date')
     search_fields = ('group__name', 'user__username', 'user__email', 'user__first_name', 'user__last_name')
     list_filter = ('status', 'group__type', 'user__is_staff')
-    readonly_fields = ('creation_date',)
+    readonly_fields = ('creation_date', 'id')
     date_hierarchy = 'creation_date'
     list_per_page = 15
     fieldsets = (
@@ -60,10 +60,10 @@ class UserInvite(admin.ModelAdmin):
 
 @admin.register(models.Snippet)
 class Snippet(admin.ModelAdmin):
-    list_display = ('name', 'user', 'group', 'status', 'creation_date')
+    list_display = ('id', 'name', 'user', 'group', 'status', 'creation_date')
     search_fields = ('name', 'group__name', 'user__username', 'user__email', 'user__first_name', 'user__last_name')
     list_filter = ('status', 'group__type', 'user__is_staff')
-    readonly_fields = ('creation_date',)
+    readonly_fields = ('creation_date', 'id')
     date_hierarchy = 'creation_date'
     prepopulated_fields = {'slug': ('name',)}
     list_per_page = 15

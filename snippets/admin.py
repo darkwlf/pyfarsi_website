@@ -33,14 +33,14 @@ class Member(admin.ModelAdmin):
 
 @admin.register(models.InviteLink)
 class InviteLink(admin.ModelAdmin):
-    list_display = ('invite_id', 'group', 'status', 'users_joined')
+    list_display = ('invite_id', 'group', 'status', 'users_joined', 'creation_date')
     search_fields = ('group__name',)
     list_filter = ('status', 'group__type')
-    readonly_fields = ('invite_id',)
+    readonly_fields = ('invite_id', 'creation_date')
     list_per_page = 15
     fieldsets = (
         ('Information', {'fields': ('invite_id', 'group', 'users_joined')}),
-        ('Status', {'fields': ('status',)})
+        ('Status', {'fields': ('status', 'creation_date')})
     )
 
 

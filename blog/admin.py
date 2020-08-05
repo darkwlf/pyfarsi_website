@@ -17,10 +17,11 @@ class Article(admin.ModelAdmin):
     list_display = ('id', 'title', 'author', 'date', 'status', 'get_categories')
     search_fields = ('author__username', 'author__email', 'title', 'category__name')
     list_filter = ('status', 'author__is_staff')
-    date_hierarchy = 'date'
-    prepopulated_fields = {'slug': ('title',)}
-    list_per_page = 15
+    filter_horizontal = ('categories',)
     readonly_fields = ('date', 'id')
+    prepopulated_fields = {'slug': ('title',)}
+    date_hierarchy = 'date'
+    list_per_page = 15
     fieldsets = (
         ('Information', {'fields': ('id', ('title', 'slug'), 'categories')}),
         ('Status', {'fields': ('status', 'date')}),

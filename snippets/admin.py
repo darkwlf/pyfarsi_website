@@ -2,6 +2,9 @@ from django.contrib import admin
 from . import models
 
 
+USER_SEARCH_FILTER = ('user__username', 'user__email', 'user__first_name', 'user__last_name')
+
+
 @admin.register(models.Group)
 class Group(admin.ModelAdmin):
     list_display = ('id', 'name', 'type', 'creation_date')
@@ -20,7 +23,7 @@ class Group(admin.ModelAdmin):
 @admin.register(models.Member)
 class Member(admin.ModelAdmin):
     list_display = ('id', 'group', 'user', 'date_joined')
-    search_fields = ('group__name', 'user__username', 'user__email', 'user__first_name', 'user__last_name')
+    search_fields = ('group__name', *USER_SEARCH_FILTER)
     list_filter = ('group__type', 'user__is_staff')
     readonly_fields = ('date_joined', 'id')
     date_hierarchy = 'date_joined'
@@ -47,7 +50,7 @@ class InviteLink(admin.ModelAdmin):
 @admin.register(models.UserInvite)
 class UserInvite(admin.ModelAdmin):
     list_display = ('id', 'user', 'group', 'status', 'creation_date')
-    search_fields = ('group__name', 'user__username', 'user__email', 'user__first_name', 'user__last_name')
+    search_fields = ('group__name', *USER_SEARCH_FILTER)
     list_filter = ('status', 'group__type', 'user__is_staff')
     readonly_fields = ('creation_date', 'id')
     date_hierarchy = 'creation_date'
@@ -61,7 +64,7 @@ class UserInvite(admin.ModelAdmin):
 @admin.register(models.Snippet)
 class Snippet(admin.ModelAdmin):
     list_display = ('id', 'name', 'user', 'group', 'status', 'creation_date')
-    search_fields = ('name', 'group__name', 'user__username', 'user__email', 'user__first_name', 'user__last_name')
+    search_fields = ('name', 'group__name', *USER_SEARCH_FILTER)
     list_filter = ('status', 'group__type', 'user__is_staff')
     readonly_fields = ('creation_date', 'id')
     date_hierarchy = 'creation_date'

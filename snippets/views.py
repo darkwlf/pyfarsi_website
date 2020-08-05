@@ -21,6 +21,23 @@ class CreateGroup(LoginRequiredMixin, CreateView):
         return reverse('snippets:group', self.object.id)
 
 
+class CreateSnippet(LoginRequiredMixin, CreateView):
+    model = models.Snippet
+    fields = ('name', 'description', 'code', 'slug')
+
+    def get_success_url(self):
+        return reverse('snippets:snippet', self.object.id)
+
+    def form_valid(self, form):
+        self.object = form.save(False)
+        self.object.user = self.request.user
+        self.object.group = get_object_or_404(
+            models.Member, user=self.request.user, group__id=self.kwargs['group_id']
+        ).group
+        self.object.save()
+        return redirect(self.get_success_url())
+
+
 @login_required
 def join_group(request, invite_id):
     invite = get_object_or_404(models.InviteLink, invite_id=invite_id)

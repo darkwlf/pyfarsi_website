@@ -13,6 +13,7 @@ class Group(models.Model):
         private = 'n', gettext_lazy('private')
 
     name = models.CharField(max_length=100, verbose_name=translations.name)
+    creator = models.ForeignKey(User, models.SET_NULL, 'group_creator', verbose_name=gettext_lazy('creator'))
     description = models.TextField(max_length=800, verbose_name=translations.description)
     type = models.CharField(max_length=1, verbose_name=gettext_lazy('type'), choices=Type.choices)
     logo = models.ImageField(upload_to='logos/', verbose_name=gettext_lazy('logo'), null=True, blank=True)

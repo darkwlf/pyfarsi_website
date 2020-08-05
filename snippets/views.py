@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.shortcuts import reverse, redirect
 from . import models
+from django.utils.text import slugify
 
 
 class Group(LoginRequiredMixin, DetailView):
@@ -14,8 +15,14 @@ class Group(LoginRequiredMixin, DetailView):
 
 class CreateGroup(LoginRequiredMixin, CreateView):
     model = models.Group
-    fields = ('name', 'description', 'type', 'logo', 'slug')
+    fields = ('name', 'description', 'type', 'logo')
     template_name = 'snippets/create_group.html'
+
+    def form_valid(self, form):
+        self.object = form.save(False)
+        self.object.creator = self.request.user
+        self.object.slug = slugify(self.object.name, True)
+        return redirect(self.get_success_url())
 
     def get_success_url(self):
         return reverse('snippets:group', self.object.id)
@@ -23,7 +30,7 @@ class CreateGroup(LoginRequiredMixin, CreateView):
 
 class CreateSnippet(LoginRequiredMixin, CreateView):
     model = models.Snippet
-    fields = ('name', 'description', 'code', 'slug')
+    fields = ('name', 'description', 'code',)
 
     def get_success_url(self):
         return reverse('snippets:snippet', self.object.id)
@@ -34,6 +41,7 @@ class CreateSnippet(LoginRequiredMixin, CreateView):
         self.object.group = get_object_or_404(
             models.Member, user=self.request.user, group__id=self.kwargs['group_id']
         ).group
+        self.object.slug = slugify(self.object.name, True)
         self.object.save()
         return redirect(self.get_success_url())
 

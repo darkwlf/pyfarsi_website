@@ -5,10 +5,11 @@ from .models import Validation, User
 from django.utils.html import strip_tags
 from .tasks import remove_user
 from .decorators import not_logged_in
-from .mixins import LoginRequired, NotLoggedIn
+from .mixins import NotLoggedIn
 from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import CreateView, UpdateView
+from django.contrib.auth.mixins import LoginRequiredMixin
 from . import models
 from .forms import Register, Profile
 
@@ -19,7 +20,7 @@ class Login(auth_views.LoginView):
     redirect_authenticated_user = True
 
 
-class Logout(LoginRequired, auth_views.LogoutView):
+class Logout(LoginRequiredMixin, auth_views.LogoutView):
     redirect_field_name = None
     template_name = 'account/logout.html'
 
@@ -83,7 +84,7 @@ def verify_email(request, key):
     return render(request, 'account/verify_email.html')
 
 
-class ProfileView(LoginRequired, UpdateView):
+class ProfileView(LoginRequiredMixin, UpdateView):
     model = User
     form_class = Profile
     template_name = 'account/profile.html'

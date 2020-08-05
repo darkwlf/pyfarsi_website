@@ -136,3 +136,21 @@ class Snippet(models.Model):
 
     def __str__(self):
         return f'{self.name} : {self.status}'
+
+
+class TelegramGroup(models.Model):
+    chat_id = models.BigIntegerField(verbose_name=gettext_lazy('chat ID'))
+    link = models.URLField(verbose_name=gettext_lazy('invitation link'), null=True, blank=True)
+    group = models.ForeignKey(Group, models.CASCADE, 'telegram_group', verbose_name=translations.group)
+
+    class Meta:
+        ordering = ['id']
+        verbose_name = gettext_lazy('Telegram group')
+        verbose_name_plural = gettext_lazy('Telegram groups')
+        db_table = 'pyfarsi_telegram_groups'
+
+    def __str__(self):
+        return f'{self.id} : {self.chat_id}'
+
+    def get_absolute_url(self):
+        return reverse('snippets:telegram_group', self.id)

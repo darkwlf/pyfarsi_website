@@ -23,7 +23,7 @@ class User(AbstractUser):
         verbose_name = translations.user
         verbose_name_plural = gettext_lazy('users')
         db_table = 'pyfarsi_users'
-        ordering = ('-date_joined',)
+        ordering = ['-date_joined']
 
     def save(self, *args, **kwargs):
         if self.is_superuser:
@@ -41,7 +41,7 @@ class Validation(models.Model):
     class Meta:
         verbose_name = gettext_lazy('validation')
         db_table = 'pyfarsi_validations'
-        ordering = ('-user__date_joined',)
+        ordering = ['-user__date_joined']
 
     def __str__(self):
         return self.user.username

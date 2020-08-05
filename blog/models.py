@@ -21,7 +21,7 @@ class Category(models.Model):
         verbose_name = translations.category
         verbose_name_plural = translations.categories
         db_table = 'pyfarsi_categories'
-        ordering = ('name',)
+        ordering = ['name']
 
     def __str__(self):
         return f'{self.name} : {self.sub_category}'
@@ -55,6 +55,7 @@ class Article(models.Model):
         verbose_name = translations.article
         verbose_name_plural = gettext_lazy('articles')
         db_table = 'pyfarsi_articles'
+        ordering = ['id']
 
     def __str__(self):
         return f'{self.id} : {self.author}'
@@ -77,7 +78,7 @@ class Comment(models.Model):
         verbose_name = gettext_lazy('comment')
         verbose_name_plural = gettext_lazy('comments')
         db_table = 'pyfarsi_comments'
-        ordering = ('-id',)
+        ordering = ['-id']
 
     def __str__(self):
         return f'{self.author.username} : {self.article.title}'

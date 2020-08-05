@@ -22,7 +22,7 @@ class Group(models.Model):
     class Meta:
         verbose_name = translations.group
         verbose_name_plural = gettext_lazy('groups')
-        ordering = ('id',)
+        ordering = ['id']
         db_table = 'pyfarsi_groups'
 
     def get_absolute_url(self):
@@ -40,7 +40,7 @@ class Member(models.Model):
     class Meta:
         verbose_name = gettext_lazy('member')
         verbose_name_plural = gettext_lazy('members')
-        ordering = ('id',)
+        ordering = ['id']
         db_table = 'pyfarsi_members'
 
     def get_absolute_url(self):
@@ -66,7 +66,7 @@ class InviteLink(models.Model):
         verbose_name = gettext_lazy('invitation link')
         verbose_name_plural = gettext_lazy('invitation links')
         db_table = 'pyfarsi_invite_links'
-        ordering = ('invite_id',)
+        ordering = ['invite_id']
 
     def get_absolute_url(self):
         return reverse('snippets:join_group', self.invite_id)
@@ -96,7 +96,7 @@ class UserInvite(models.Model):
         verbose_name = gettext_lazy('user invitation')
         verbose_name_plural = gettext_lazy('user invitations')
         db_table = 'pyfarsi_user_invites'
-        ordering = ('id',)
+        ordering = ['id']
 
     def get_absolute_url(self):
         return reverse('snippets:invite', self.id)
@@ -126,7 +126,7 @@ class Snippet(models.Model):
     slug = models.SlugField(max_length=50)
 
     class Meta:
-        ordering = ('id',)
+        ordering = ['id']
         verbose_name = translations.snippet
         verbose_name_plural = gettext_lazy('snippets')
         db_table = 'pyfarsi_snippets'

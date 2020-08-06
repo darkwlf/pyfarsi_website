@@ -13,7 +13,9 @@ class Group(models.Model):
         private = 'n', gettext_lazy('private')
 
     name = models.CharField(max_length=100, verbose_name=translations.name)
-    creator = models.ForeignKey(User, models.SET_NULL, 'group_creator', verbose_name=gettext_lazy('creator'))
+    creator = models.ForeignKey(
+        User, models.SET_NULL, 'group_creator', verbose_name=gettext_lazy('creator'), null=True, blank=True
+    )
     description = models.TextField(max_length=800, verbose_name=translations.description)
     type = models.CharField(max_length=1, verbose_name=gettext_lazy('type'), choices=Type.choices)
     logo = models.ImageField(upload_to='logos/', verbose_name=gettext_lazy('logo'), null=True, blank=True)
@@ -138,6 +140,23 @@ class Snippet(models.Model):
 
     def __str__(self):
         return f'{self.name} : {self.status}'
+
+
+class ScreenShot(models.Model):
+    snippet = models.ForeignKey(Snippet, models.CASCADE, 'screenshot_snippet', verbose_name=translations.snippet)
+    file = models.ImageField(verbose_name=gettext_lazy('file'), upload_to='protected/screenshots/')
+
+    class Meta:
+        ordering = ['id']
+        db_table = 'pyfarsi_screenshots'
+        verbose_name = gettext_lazy('screenshot')
+        verbose_name_plural = translations.screenshots
+
+    def __str__(self):
+        return f'{self.id} : {self.snippet.id}'
+
+    def get_absolute_url(self):
+        return self.file.url
 
 
 class TelegramGroup(models.Model):

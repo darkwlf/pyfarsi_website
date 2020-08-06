@@ -1,0 +1,11 @@
+<html lang="fa">
+<head>
+    <title>Create Group</title>
+</head>
+<body>
+<form action="{% url 'snippets:create_group' %}" method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <input type="submit">
+</form>
+</body>
+</html>

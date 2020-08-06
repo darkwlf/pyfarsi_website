@@ -138,3 +138,4 @@ LOGIN_URL = 'account:login'
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = 'emails'
 CKEDITOR_UPLOAD_PATH = 'ckeditor'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

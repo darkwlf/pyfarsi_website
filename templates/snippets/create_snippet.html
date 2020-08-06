@@ -1,0 +1,15 @@
+<html lang="fa">
+<head>
+    <title>Create Group</title>
+</head>
+<body>
+<form action="{% url 'snippets:create_snippet' group_id %}" method="post" enctype="multipart/form-data">{% csrf_token %}
+    {{ form.media }}
+    {{ form.as_p }}
+    {% for error in form.errors %}
+        <h1>{{ error }}</h1>
+    {% endfor %}
+    <input type="submit">
+</form>
+</body>
+</html>

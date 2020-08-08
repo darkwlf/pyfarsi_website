@@ -6,6 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.shortcuts import reverse, redirect
 from . import forms
 from . import models
+from .functions import close_snippet
 from django.utils.text import slugify
 
 
@@ -13,7 +14,7 @@ class Group(LoginRequiredMixin, DetailView):
     template_name = 'snippets/group.html'
     model = models.Group
 
-    def get_context_data(self):
+    def get_context_data(self, **kwargs):
         try:
             self.extra_context = {'member': models.Member.objects.get(user=request.user, group=self.object)}
         except models.Member.DoesNotExists:
@@ -28,9 +29,11 @@ class CreateGroup(LoginRequiredMixin, CreateView):
 
     def form_valid(self, form):
         self.object = form.save(False)
-        self.object.creator = self.request.user
         self.object.slug = slugify(self.object.name, True)
         self.object.save()
+        models.Member.objects.create(
+            user=self.request.user, group=self.object, rank=models.Member.Rank.owner, status=models.Member.Rank.member
+            )
         return redirect(self.get_success_url())
 
     def get_success_url(self):
@@ -39,16 +42,18 @@ class CreateGroup(LoginRequiredMixin, CreateView):
 
 class CreateSnippet(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     form_class = forms.Snippet
-    template_name = 'snippets/create_snippet.html'
+    template_name = 'snippets/create_snippet.html
+    redirect_field_name = None
 
     def get_success_url(self):
         return reverse('snippets:snippet', kwargs={'pk': self.object.id})
 
     def test_func(self):
+        group = models.Group.objects.get(id=self.kwargs['group_id'])
         try:
-            return models.Member.objects.get(user=self.request.user, group__id=self.kwargs['group_id'])
+            return models.Member.objects.get(user=self.request.user, group=group)
         except models.Member.DoesNotExists:
-            return None
+            return group.type == models.Group.Type.public
 
     def form_valid(self, form):
         self.object = form.save(False)
@@ -67,9 +72,16 @@ class CreateSnippet(LoginRequiredMixin, UserPassesTestMixin, CreateView):
         return super().get_context_data(**kwargs)
 
 
-class Snippet(DetailView):
+class Snippet(UserPassesTestMixin, DetailView):
     model = models.Snippet
     template_name = 'snippets/snippet.html'
+    redirect_field_name = None
+
+    def test_func(self):
+        try:
+            return models.Member.objects.get(user=self.request.user, group=self.object.group)
+        except models.Member.DoesNotExists:
+            return self.object.group.type == models.Group.Type.public
 
     def get_context_data(self, **kwargs):
         self.extra_context = {'screenshots': self.object.screenshot_snippet.all()}
@@ -95,3 +107,22 @@ def join_group(request, group_id):
         user=request.user, group=group, defaults={'status': models.Member.Status.pending}
         )
     return redirect('snippets:group', pk=group.id)
+
+
+@login_required
+def close_snippet(request, snippet_id):
+    snippet = get_object_or_404(models.Snippet, id=snippet_id)
+    if snippet.user != request.user:
+        try:
+            models.Member.objects.get(
+                user=request.user,
+                rank__in=(models.Member.Rank.admin, models.Member.Rank.owner),
+                group=snippet.group
+                )
+        except models.Member.DoesNotExists:
+            pass
+        else:
+            close_snippet(snippet)
+    else:
+        close_snippet(snippet)
+    return redirect('snippets:snippet', pk=snippet_id)

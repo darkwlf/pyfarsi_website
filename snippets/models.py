@@ -13,9 +13,6 @@ class Group(models.Model):
         private = 'n', gettext_lazy('private')
 
     name = models.CharField(max_length=100, verbose_name=translations.name)
-    creator = models.ForeignKey(
-        User, models.SET_NULL, 'group_creator', verbose_name=gettext_lazy('creator'), null=True, blank=True
-    )
     description = models.TextField(max_length=800, verbose_name=translations.description)
     type = models.CharField(max_length=1, verbose_name=gettext_lazy('type'), choices=Type.choices)
     logo = models.ImageField(upload_to='logos/', verbose_name=gettext_lazy('logo'), null=True, blank=True)
@@ -40,9 +37,15 @@ class Member(models.Model):
         pending = 'p', translations.pending
         member = 'm', translations.member
 
+    class Rank(models.TextChoices):
+        member = 'm', translations.member
+        admin = 'a', gettext_lazy('administrator')
+        owner = 'o', gettext_lazy('owner')
+
     group = models.ForeignKey(Group, models.CASCADE, 'member_group', verbose_name=translations.group)
     user = models.ForeignKey(User, models.CASCADE, 'member_user', verbose_name=translations.user)
     date_joined = models.DateTimeField(gettext_lazy('date joined'), auto_now_add=True)
+    rank = models.CharField(gettext_lazy('rank'), max_length=1, choices=Rank.choices)
     status = models.CharField(max_length=1, verbose_name=translations.status, choices=Status.choices)
 
     class Meta:

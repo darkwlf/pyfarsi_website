@@ -42,7 +42,7 @@ class CreateGroup(LoginRequiredMixin, CreateView):
 
 class CreateSnippet(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     form_class = forms.Snippet
-    template_name = 'snippets/create_snippet.html
+    template_name = 'snippets/create_snippet.html'
     redirect_field_name = None
 
     def get_success_url(self):

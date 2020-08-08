@@ -1,5 +1,6 @@
 # IDEA
 .idea
+.vscode
 # Development Email Server
 emails
 # Byte-compiled / optimized / DLL files

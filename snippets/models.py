@@ -36,12 +36,17 @@ class Group(models.Model):
 
 
 class Member(models.Model):
+    class Status(models.TextChoices):
+        pending = 'p', translations.pending
+        member = 'm', translations.member
+
     group = models.ForeignKey(Group, models.CASCADE, 'member_group', verbose_name=translations.group)
     user = models.ForeignKey(User, models.CASCADE, 'member_user', verbose_name=translations.user)
     date_joined = models.DateTimeField(gettext_lazy('date joined'), auto_now_add=True)
+    status = models.CharField(max_length=1, verbose_name=translations.status, choices=Status.choices)
 
     class Meta:
-        verbose_name = gettext_lazy('member')
+        verbose_name = translations.member
         verbose_name_plural = gettext_lazy('members')
         ordering = ['id']
         db_table = 'pyfarsi_members'

@@ -8,5 +8,6 @@ urlpatterns = (
     path('create-snippet/<int:group_id>/', views.CreateSnippet.as_view(), name='create_snippet'),
     path('snippet/<int:pk>/', views.Snippet.as_view(), name='snippet'),
     path('join-group/<int:group_id>/', views.join_group, name='join_group'),
-    path('close-snippet/<int:snippet_id>/', views.close_snippet, name='close_snippet')
+    path('snippet-actions/<int:snippet_id>/<str:action>/', views.snippet_actions, name='snippet_actions'),
+    path('snippets/<int:page>/', views.Snippets.as_view(), name='snippets')
 )

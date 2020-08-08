@@ -1,25 +1,50 @@
-from django.views.generic import CreateView
+from django.views.generic import CreateView, ListView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.shortcuts import reverse, redirect
-from . import forms
-from . import models
-from .functions import close_snippet
+from . import forms, models, actions
+from .functions import take_action
 from django.utils.text import slugify
+from django.db.models import Q
 
 
-class Group(LoginRequiredMixin, DetailView):
+class Group(DetailView):
     template_name = 'snippets/group.html'
     model = models.Group
 
     def get_context_data(self, **kwargs):
-        try:
-            self.extra_context = {'member': models.Member.objects.get(user=request.user, group=self.object)}
-        except models.Member.DoesNotExists:
-            pass
+        if self.request.user.is_authenticated:
+            try:
+                self.extra_context = {'member': models.Member.objects.get(user=request.user, group=self.object)}
+            except models.Member.DoesNotExists:
+                pass
         return super().get_context_data()
+
+
+class Snippets(ListView):
+    paginate_by = 15
+    template_name = 'snippets/snippets.html'
+
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            memberships = self.request.user.member_user.select_related('group').filter(
+                status=models.Member.Status.member, group__type=models.Group.Type.private
+                )
+            groups = [group_tuple[0] for membership_groups in memberships.values_list(
+                'group__id'
+                ) for group_tuple in membership_groups]
+        else:
+            groups = []
+        keyword = self.request.GET.get('q', '')
+        result = models.Snippet.objects.filter((
+            Q(group__type=models.Group.Type.public) | Q(group__id__in=groups)
+            ) & (Q(name__icontains=keyword) | Q(description__icontains=keyword)))
+        if self.request.GET['groups']:
+            groups = self.request.GET['groups'].split(', ')
+            return result.filter(group__id__in=groups)
+        return result
 
 
 class CreateGroup(LoginRequiredMixin, CreateView):
@@ -110,7 +135,7 @@ def join_group(request, group_id):
 
 
 @login_required
-def close_snippet(request, snippet_id):
+def snippet_actions(request, snippet_id:int, action: str):
     snippet = get_object_or_404(models.Snippet, id=snippet_id)
     if snippet.user != request.user:
         try:
@@ -122,7 +147,9 @@ def close_snippet(request, snippet_id):
         except models.Member.DoesNotExists:
             pass
         else:
-            close_snippet(snippet)
+            take_action(snippet, action)
     else:
-        close_snippet(snippet)
-    return redirect('snippets:snippet', pk=snippet_id)
+        take_action(snippet, action)
+    if action is actions.close:
+        return redirect('snippets:snippet', pk=snippet_id)
+    return redirect('snippets:snippets', groups=snippet.group.id)

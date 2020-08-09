@@ -75,3 +75,15 @@ class Snippet(admin.ModelAdmin):
         ('Status', {'fields': ('status', 'creation_date')}),
         ('Description', {'fields': ('description',)})
     )
+
+@admin.site.register(models.TelegramGroup)
+class TelegramGroup(admin.ModelAdmin):
+    list_display = ('id', 'name', 'group', 'creation_date')
+    search_fields = ('name', *USER_SEARCH_FILTER)
+    list_filter = ('status', 'group__type', 'user__is_staff')
+    readonly_fields = ('creation_date', 'id')
+    date_hierarchy = 'creation_date'
+    list_per_page = 15
+    fieldsets = (
+        ('Information', {'fields': (('name', 'slug'), 'code', ('group', 'user'))}),)
+    )

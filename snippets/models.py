@@ -118,6 +118,12 @@ class UserInvite(models.Model):
 
 
 class Snippet(models.Model):
+    class Lang(models.TextChoices):
+        python = 'py', 'Python'
+        js = 'js', 'JavaScript'
+        cpp = 'cpp', 'C ++'
+        go = 'go', 'Go'
+
     class Status(models.TextChoices):
         open = 'o', gettext_lazy('open')
         closed = 'c', gettext_lazy('closed')
@@ -136,6 +142,7 @@ class Snippet(models.Model):
         Group, models.SET_NULL, 'snippet_group', verbose_name=translations.group, blank=True, null=True
     )
     slug = models.SlugField(max_length=50)
+    lang = models.CharFIeld(gettext_lazy('language'), max_length=10, choices=Lang.choices)
 
     class Meta:
         ordering = ['id']

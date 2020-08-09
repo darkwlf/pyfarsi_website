@@ -75,6 +75,8 @@ class Snippet(admin.ModelAdmin):
         ('Status', {'fields': ('status', 'creation_date')}),
         ('Description', {'fields': ('description',)})
     )
+    
+    
 @admin.site.register(models.TelegramGroup)
 class TelegramGroup(admin.ModelAdmin):
     list_display = ('id', 'name', 'group', 'creation_date')

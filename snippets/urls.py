@@ -10,5 +10,6 @@ urlpatterns = (
     path('join-group/<int:group_id>/', views.join_group, name='join_group'),
     path('snippet-actions/<int:snippet_id>/<str:action>/', views.snippet_actions, name='snippet_actions'),
     path('snippets/<int:page>/', views.Snippets.as_view(), name='snippets'),
-    path('get-groups/<str:q>/', views.GetGroups.as_view(), name='get_groups')
+    path('get-groups/<str:q>/', views.GetGroups.as_view(), name='get_groups'),
+    path('groups/<int:page>/', views.Groups.as_view(), name='groups')
 )

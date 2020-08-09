@@ -24,6 +24,20 @@ class Group(DetailView):
         return super().get_context_data()
 
 
+class Groups(ListView):
+    template_name = 'snippets/groups.html'
+    paginate_by = 15
+
+    def get_queryset(self):
+        result = models.Group.objects.all()
+        if keyword := self.request.GET.get('q'):
+            result = result.filter(Q(name__icontains=keyword) | Q(description__icontains=keyword))
+        if types := self.request.GET.get('types'):
+            types = types.split(', ')
+            result = result.filter(type__in=types)
+        return result
+
+
 class Snippets(ListView):
     paginate_by = 15
     template_name = 'snippets/snippets.html'

@@ -4,9 +4,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import get_object_or_404
 from django.shortcuts import reverse, redirect
-from . import forms, models, actions
+from . import forms, models, actions, serializers
 from .functions import take_action
 from django.utils.text import slugify
+from rest_framework.generics import ListAPIView
 from django.db.models import Q
 
 
@@ -111,6 +112,15 @@ class Snippet(UserPassesTestMixin, DetailView):
     def get_context_data(self, **kwargs):
         self.extra_context = {'screenshots': self.object.screenshot_snippet.all()}
         return super().get_context_data(**kwargs)
+    
+
+class GetGroups(ListAPIView):
+    serializer_class = serializers.GetGroups
+    
+    def get_queryset(self):
+        return models.Group.objects.filter(
+            Q(name__icontains=self.kwargs['q']), Q(description__icontains=self.kwargs['q'])
+            )
 
 
 @login_required

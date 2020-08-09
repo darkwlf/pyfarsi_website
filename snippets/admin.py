@@ -77,7 +77,7 @@ class Snippet(admin.ModelAdmin):
     )
     
     
-@admin.site.register(models.TelegramGroup)
+@admin.register(models.TelegramGroup)
 class TelegramGroup(admin.ModelAdmin):
     list_display = ('id', 'name', 'group', 'creation_date')
     search_fields = ('name', *USER_SEARCH_FILTER)

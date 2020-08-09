@@ -42,9 +42,12 @@ class Snippets(ListView):
         result = models.Snippet.objects.filter((
             Q(group__type=models.Group.Type.public) | Q(group__id__in=groups)
             ) & (Q(name__icontains=keyword) | Q(description__icontains=keyword)))
-        if self.request.GET['groups']:
+        if self.request.GET.get('groups'):
             groups = self.request.GET['groups'].split(', ')
-            return result.filter(group__id__in=groups)
+            result = result.filter(group__id__in=groups)
+        if self.request.GET.get('langs'):
+            langs = self.request.GET['langs'].split(', ')
+            result = result.filter(lang__in=langs)
         return result
 
 
